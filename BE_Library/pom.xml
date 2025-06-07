@@ -30,6 +30,7 @@
 		<java.version>21</java.version>
 		<springdoc.version>2.5.0</springdoc.version>
 		<jjwt.version>0.12.5</jjwt.version>
+		<modelmapper.version>3.1.1</modelmapper.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -60,6 +61,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!--Security-->
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.boot</groupId>-->
+<!--			<artifactId>spring-boot-starter-security</artifactId>-->
+<!--		</dependency>-->
+
 		<!--API Documentation-->
 		<dependency>
 			<groupId>org.springdoc</groupId>
@@ -83,6 +90,12 @@
 			<artifactId>jjwt-jackson</artifactId>
 			<version>${jjwt.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>${modelmapper.version}</version>
 		</dependency>
 	</dependencies>
 

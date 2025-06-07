@@ -10,7 +10,9 @@ spring:
       - swagger
   application:
     name: BE Library
-
+  jpa:
+    hibernate:
+      ddl-auto: update
   datasource:
     url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:library}
     username: ${DATABASE_USERNAME:root}

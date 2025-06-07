@@ -58,7 +58,7 @@ public class SwaggerConfiguration {
         }
     }
 
-    public static final Set<String> WEB_API_TAGS = Set.of(
+    public static final Set<String> WEB_API_TAGS = Set.of("User"
     );
 
     @Bean
