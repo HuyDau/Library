@@ -1,0 +1,30 @@
+server:
+  shutdown: graceful
+  port: 8080
+
+spring:
+  profiles:
+    default: development
+    active: ${PROFILES_ACTIVE:development}
+    include:
+      - swagger
+  application:
+    name: BE Library
+
+  datasource:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:library}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:123123}
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      connectionTimeout: 30000
+      maximumPoolSize: 10
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      jdbc:
+        batch_size: 100
+
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
