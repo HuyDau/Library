@@ -1,6 +1,7 @@
 package com.example.BE_Library.user.service;
 
 import com.example.BE_Library.user.entity.User;
+import com.example.BE_Library.user.exception.UserNotFoundException;
 import com.example.BE_Library.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,9 @@ public class UserService {
 
     public User createUser(User user) {
         return userRepository.save(user);
+    }
+
+    public User findById(String userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::getInstance);
     }
 }

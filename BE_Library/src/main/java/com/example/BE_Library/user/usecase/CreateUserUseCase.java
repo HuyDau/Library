@@ -8,6 +8,8 @@ import com.example.BE_Library.user.entity.User;
 import com.example.BE_Library.user.exception.UserEmailExistedException;
 import com.example.BE_Library.user.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -17,13 +19,13 @@ import java.util.UUID;
 public class CreateUserUseCase extends BaseUseCase<CreateUserRequest, CreateUserResponse> {
 
     private  final UserService userService;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public CreateUserResponse execute(CreateUserRequest requestData) {
-        String email = requestData.getEmail();
 
-        if(userService.isExistedEmail(requestData.getFullName(), email)){
+        if(userService.isExistedEmail(requestData.getFullName(), requestData.getEmail())){
             throw UserEmailExistedException.getInstance();
         }
 
@@ -34,7 +36,7 @@ public class CreateUserUseCase extends BaseUseCase<CreateUserRequest, CreateUser
         }
 
         user.setId(UUID.randomUUID().toString());
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         user = userService.createUser(user);
 

@@ -5,6 +5,8 @@ import com.example.BE_Library.user.repository.jpa.UserJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @AllArgsConstructor
 public class UserRepositoryAdapter implements UserRepository{
@@ -24,5 +26,10 @@ public class UserRepositoryAdapter implements UserRepository{
     @Override
     public User save(User user) {
         return userJpaRepository.save(user);
+    }
+
+    @Override
+    public Optional<User> findById(String userId) {
+        return userJpaRepository.findById(userId);
     }
 }

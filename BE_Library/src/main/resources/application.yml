@@ -17,7 +17,7 @@ spring:
     url: jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:library}
     username: ${DATABASE_USERNAME:root}
     password: ${DATABASE_PASSWORD:123123}
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connectionTimeout: 30000
       maximumPoolSize: 10
@@ -30,3 +30,9 @@ spring:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
+
+application:
+  security:
+    jwt:
+      secret-key: 843567893696976453275974432697R634976R738467TR678T34865R6834R8763T478378637664538745673865783678548735687R3
+
