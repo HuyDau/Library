@@ -1,13 +1,18 @@
 package com.example.BE_Library.user.controller;
 
+import com.example.BE_Library.common.constant.PagingConstant;
 import com.example.BE_Library.common.dto.request.NoDataRequest;
 import com.example.BE_Library.common.usecase.GetUserInfoUseCase;
 import com.example.BE_Library.user.controller.swagger.CreateUserResponseSchema;
 import com.example.BE_Library.user.controller.swagger.GetUserInfoResponseSchema;
+import com.example.BE_Library.user.controller.swagger.ListUserResponseSchema;
 import com.example.BE_Library.user.dto.request.CreateUserRequest;
+import com.example.BE_Library.user.dto.request.user.ListUserRequest;
 import com.example.BE_Library.user.dto.response.CreateUserResponse;
 import com.example.BE_Library.user.dto.response.user.GetUserInfoResponse;
+import com.example.BE_Library.user.dto.response.user.ListUserResponse;
 import com.example.BE_Library.user.usecase.CreateUserUseCase;
+import com.example.BE_Library.user.usecase.ListUserUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -17,6 +22,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private CreateUserUseCase createUserUseCase;
+    private ListUserUseCase listUserUseCase;
     private GetUserInfoUseCase getUserInfoUseCase;
 
     @PostMapping
@@ -56,5 +63,23 @@ public class UserController {
     })
     public GetUserInfoResponse getUserInfo() {
         return getUserInfoUseCase.execute(NoDataRequest.getInstance());
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation(summary = "List Users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Success",
+                    content = {@Content(schema = @Schema(implementation = ListUserResponseSchema.class))})
+    })
+    public ListUserResponse listUsers(
+            @RequestParam(value = "searchTerm", required = false, defaultValue = "") String searchTerm,
+            @RequestParam(value = "sort", required = false, defaultValue = "name_english,DESC") String sort,
+            @RequestParam(value = "page", required = false, defaultValue = PagingConstant.DEFAULT_PAGE_VALUE) Integer page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = PagingConstant.DEFAULT_PAGE_SIZE_VALUE) Integer pageSize,
+            @RequestParam(value = "includeTotal", defaultValue = "false") boolean includeTotal
+    ){
+        ListUserRequest request = new ListUserRequest(searchTerm, sort, page, pageSize, includeTotal);
+        return listUserUseCase.execute(request);
     }
 }

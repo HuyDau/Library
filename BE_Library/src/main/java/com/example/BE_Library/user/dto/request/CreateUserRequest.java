@@ -23,5 +23,5 @@ public class CreateUserRequest extends RequestData {
     private String fullName;
 
     @Size(max = TextMaxLength.TEXT_BOX, message = "Phone number must be shorter than or equal " + TextMaxLength.TEXT_BOX)
-    private String phone;
+    private String phoneNumber;
 }

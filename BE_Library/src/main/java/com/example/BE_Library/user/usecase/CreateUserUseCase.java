@@ -2,6 +2,7 @@ package com.example.BE_Library.user.usecase;
 
 import com.example.BE_Library.common.usecase.BaseUseCase;
 import com.example.BE_Library.common.util.ModelMapperUtils;
+import com.example.BE_Library.common.util.RequestContext;
 import com.example.BE_Library.user.dto.request.CreateUserRequest;
 import com.example.BE_Library.user.dto.response.CreateUserResponse;
 import com.example.BE_Library.user.entity.User;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 @Component
@@ -24,7 +28,6 @@ public class CreateUserUseCase extends BaseUseCase<CreateUserRequest, CreateUser
 
     @Override
     public CreateUserResponse execute(CreateUserRequest requestData) {
-
         if(userService.isExistedEmail(requestData.getFullName(), requestData.getEmail())){
             throw UserEmailExistedException.getInstance();
         }
@@ -37,7 +40,8 @@ public class CreateUserUseCase extends BaseUseCase<CreateUserRequest, CreateUser
 
         user.setId(UUID.randomUUID().toString());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
+        user.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        user.setCreatedBy("User");
         user = userService.createUser(user);
 
         return new CreateUserResponse(user.getId());
