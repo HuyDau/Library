@@ -42,6 +42,11 @@ public class UserRepositoryAdapter implements UserRepository{
     }
 
     @Override
+    public boolean isExistedUser(String userId){
+        return userJpaRepository.existsById(userId);
+    }
+
+    @Override
     public User save(User user) {
         return userJpaRepository.save(user);
     }
@@ -49,5 +54,10 @@ public class UserRepositoryAdapter implements UserRepository{
     @Override
     public Optional<User> findById(String userId) {
         return userJpaRepository.findById(userId);
+    }
+
+    @Override
+    public void update(User user) {
+        userJpaRepository.save(user);
     }
 }

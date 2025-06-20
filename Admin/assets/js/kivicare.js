@@ -313,65 +313,6 @@ Index Of Script
       })
     }
   }
-  /*-------------Data tables---------------*/
-  if ($.fn.DataTable) {
-    // Bootstrap DataTable
-    if ($('[data-toggle="data-table"]').length) {
-      $('[data-toggle="data-table"]').DataTable({
-        "autoWidth": false,
-        "dom": '<"row align-items-center gy-2"<"col-md-6" l><"col-md-6" f>><"table-responsive my-3" rt><"row align-items-center" <"col-md-6" i><"col-md-6" p>><"clear">',
-      });
-    }
-    // Column hidden datatable
-    if ($('[data-toggle="data-table-column-hidden"]').length) {
-      var hiddentable = $('[data-toggle="data-table-column-hidden"]').DataTable({});
-      $('a.toggle-vis').on('click', function (e) {
-        e.preventDefault();
-        const column = hiddentable.column($(this).attr('data-column'));
-        column.visible(!column.visible());
-      });
-    }
-    // Column filter datatable
-    if ($('[data-toggle="data-table-column-filter"]').length) {
-      $('[data-toggle="data-table-column-filter"] tfoot th').each(function () {
-        const title = $(this).attr('title');
-        $(this).html(`<td><input type="text" class="form-control form-control-sm" placeholder="${title}" /></td>`);
-      });
-      $('[data-toggle="data-table-column-filter"]').DataTable({
-        initComplete: function () {
-          this.api().columns().every(function () {
-            var that = this;
-
-            $('input', this.footer()).on('keyup change clear', function () {
-              if (that.search() !== this.value) {
-                that
-                  .search(this.value)
-                  .draw();
-              }
-            });
-          });
-        }
-      });
-    };
-    // Multilanguage datatable
-    if ($('[data-toggle="data-table-multi-language"]').length) {
-      function languageSelect() {
-        return Array.from(document.querySelector('#langSelector').options).filter(option => option.selected).map(option => option.getAttribute('data-path'))
-      }
-      function dataTableInit() {
-        $('[data-toggle="data-table-multi-language"]').DataTable({
-          "language": {
-            "url": languageSelect()
-          }
-        });
-      }
-      dataTableInit()
-      document.querySelector('#langSelector').addEventListener('change', (e) => {
-        $('[data-toggle="data-table-multi-language"]').dataTable().fnDestroy();
-        dataTableInit()
-      })
-    };
-  };
 
   /*--------------Active Class for Pricing Table------------------------*/
   const tableTh = document.querySelectorAll('#my-table tr th')

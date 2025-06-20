@@ -15,7 +15,9 @@ public interface UserRepository {
     boolean isExistedEmail(String fullName, String email);
 
     boolean isExistedEmail(String fullName, String email, String excludeId);
-
+    boolean isExistedUser(String userId);
     User save(User user);
     Optional<User> findById(String userId);
+
+    void update(User user);
 }

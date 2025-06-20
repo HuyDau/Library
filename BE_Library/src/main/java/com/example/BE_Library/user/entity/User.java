@@ -93,4 +93,6 @@ public class User extends SoftDeleteEntity implements UserDetails {
     public String getRole() {
         return role;
     }
+
+
 }

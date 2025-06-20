@@ -7,6 +7,7 @@ import com.example.BE_Library.user.repository.query.SearchUserQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,7 +27,9 @@ public class UserService {
     public boolean isExistedEmail(String name, String email, String excludeId) {
         return userRepository.isExistedEmail(name, email, excludeId);
     }
-
+    public boolean isExistedUser(String userId){
+        return userRepository.isExistedUser(userId);
+    }
     public User createUser(User user) {
         return userRepository.save(user);
     }
@@ -37,5 +40,9 @@ public class UserService {
 
     public long countUser(SearchUserQuery searchUserQuery) {
         return userRepository.countUser(searchUserQuery);
+    }
+
+    public void updateUser(User user) {
+        userRepository.update(user);
     }
 }
