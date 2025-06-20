@@ -5,10 +5,15 @@ import com.example.BE_Library.auth.dto.response.LoginResponse;
 import com.example.BE_Library.auth.exception.OurException;
 import com.example.BE_Library.auth.repository.AuthRepository;
 import com.example.BE_Library.auth.utils.JWTUtils;
+import com.example.BE_Library.user.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 public class AuthService implements IAuthService {
@@ -19,6 +24,8 @@ public class AuthService implements IAuthService {
     private JWTUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -45,4 +52,19 @@ public class AuthService implements IAuthService {
         }
         return response;
     }
+
+    @Override
+    @Transactional
+    public String generateNewPassword(String email) {
+        User user = authRepository.findByEmail(email).orElseThrow(() -> new OurException("User not found with email: " + email));
+
+        String newRawPassword = UUID.randomUUID().toString().substring(0, 8);
+
+        String encodedPassword = passwordEncoder.encode(newRawPassword);
+        user.setPassword(encodedPassword);
+        authRepository.save(user);
+
+        return newRawPassword;
+    }
+
 }
